@@ -2,26 +2,34 @@ import React, {Component} from "react";
 import {Table} from "react-bootstrap";
 import {Button,ButtonToolbar} from 'react-bootstrap';
 import {CreatUserModal} from './CreatUserModal';
+import {EditUserModal} from './EditUserModal';
 
 
 export class User extends Component {
 
 
-
-        // state = {
-        //     users: {},
-            
-        // }
-
-        constructor(props){
-            super(props);
-            this.state ={users:[],creatUserModalShow: false}
+        state = {
+            users: [], 
+            editUserModalShow:false,
+            creatUserModalShow:false,
+           
         }
 
-        // state = {
-        //     users: [], creatUserModalShow:false
-            
-        // }
+        showCreate(){
+            this.setState({
+                creatUserModalShow:!this.state.creatUserModalShow,
+               // editUserModalShow:!this.state.editUserModalShow
+            })
+        }
+
+
+        show(){
+            this.setState({
+                editUserModalShow:true
+            })
+        }
+
+       
          componentDidMount(){
             this.refreshList();
             
@@ -29,7 +37,7 @@ export class User extends Component {
          
 
         refreshList(){
-            console.log("data")
+            //console.log("data")
 
 
             fetch('http://localhost:3004/users')
@@ -39,44 +47,28 @@ export class User extends Component {
                  this.setState({users:data})
                 });
                 
-           
-                
-                // this.setState({
-                //     users:[
-                   
-                //    // {"Photo":<img src="https://ca.slack-edge.com/T02MD9XTF-U015WR36Z7D-62a5722ccad9-512" />, "Name":"Stephane","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"}, 
-                //     {"Photo":3, "Name":"Alex","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"}, 
-                //     {"Photo":3, "Name":"Alex","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"},   
-                //     {"Photo":3, "Name":"Alex","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"},     
-                //     {"Photo":3, "Name":"Alex","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"},    
-                //     {"Photo":3, "Name":"Alex","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"},    
-                //     {"Photo":3, "Name":"Alex","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"},    
-                     
-                      
-                // ]
-                // })
+        }
 
-                
-
-
-            
+        componentDidUpdate(){
+            this.refreshList();
         }
 
     render(){
-         const {users} = this.state;
+         const {users, userid,username,useremail, userphone} = this.state;
          let creatUserModalClose =() => this.setState({creatUserModalShow:false})
+         let editUserModalClose =() => this.setState({editUserModalShow:false})
         
         return(
             <div>
         <Table className="mt-4 "striped bordered hover size="sm">
             <thead>
                 <tr>
-                    <th>Photo  </th>
+                   
                     <th>name </th>
                     <th> phone # </th>
                     <th>Email</th>
                     <th>ID</th>
-                    <th>About me/role</th>
+                    <th>Options</th>
                     
                 </tr>
         
@@ -88,13 +80,32 @@ export class User extends Component {
                     // console.log(user.id)
                     return(
                     <tr key ={user.id}>
-                    
-                    <td>{user.image}</td>
                     <td>{user.name}</td>
                     <td>{user.phone}</td>
                     <td>{user.email}</td>
                     <td>{user.id}</td>
-                    <td>{user.comments}</td>
+                    <td>{
+                      <ButtonToolbar>
+                          <Button
+                          className="mr-2" variant="info"
+                           // oclick={()=> this.setState({editUserModalShow:true})}
+                          onClick={() => {this.show() }}
+                            
+                          >
+                              
+                              Edit
+                          </Button>
+                          
+                         
+
+                        <EditUserModal show={this.state.editUserModalShow} onHide={editUserModalClose} />
+
+
+                        <CreatUserModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
+                     </ButtonToolbar>
+                        
+                        }</td>
+                   
 
                     </tr>
                     )}
@@ -110,11 +121,12 @@ export class User extends Component {
         <ButtonToolbar>
             <Button  
             variant='primary'
-            oclick={()=> this.setState({creatUserModalShow: true})}
+            //oclick={()=> this.setState({creatUserModalShow: true})}
+            onClick={() => this.showCreate()}
             
             
              > Add User</Button>
-           <CreatUserModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
+           <CreatUserModal showCreate={this.state.creatUserModalShow} onHide={creatUserModalClose} />
         </ButtonToolbar>
        
         </div>
