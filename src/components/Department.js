@@ -1,123 +1,167 @@
-// import React, {Component} from "react"
-
-
-// export class Department extends Component {
-
-//     render(){
-//         return(
-//         <div className="mt-5 d-flex justify-content-left" >
-//             <h3>this is the departement Page </h3>
-
-
-//         </div>
-//         )
-//     }
-
-// }
-
-// export default Department;
-
-
-
-import React, {Component} from "react"
-import {Table} from "react-bootstrap"
+import React, {Component} from "react";
+import {Table} from "react-bootstrap";
+import {Button,ButtonToolbar} from 'react-bootstrap';
+import {CreatUserModal} from './CreatUserModal';
+import {EditUserModal} from './EditUserModal';
 
 
 export class Department extends Component {
 
 
-
-
-
-
-        // state = {
-        //     users: {},
-            
-        // }
-
-        // constructor(props){
-        //     super(props);
-        //     this.state ={users:[]}
-        // }
-
         state = {
-            departments: []
-            
+            users: [], 
+            editUserModalShow:false,
+            creatUserModalShow:false,
+           
         }
+
+        showCreate(){
+            this.setState({
+                creatUserModalShow:!this.state.creatUserModalShow,
+               // editUserModalShow:!this.state.editUserModalShow
+            })
+        }
+
+
+        show(userid,username,useremail,userphone){
+            this.setState({
+                editUserModalShow:true
+            })
+        }
+
+       
          componentDidMount(){
             this.refreshList();
-            
             
              }
          
 
-          refreshList(){
+        refreshList(){
+            //console.log("data")
 
 
-
-            // fetch('http://localhost:3000/users')
-            //     .then(resp=> resp.json())
-            //     .then(data => {
-            //        console.log(data)
-            //         this.setState({departments:data})
-            //     });
-
-           
+            fetch('http://localhost:3004/departments')
+                .then(resp=> resp.json())
+                .then(data => {
+                 //console.log(data)
+                 this.setState({users:data})
+                });
                 
-                this.setState({
-                    dapartments:[
-                   
-                   // {"Photo":<img src="https://ca.slack-edge.com/T02MD9XTF-U015WR36Z7D-62a5722ccad9-512" />, "Name":"Stephane","Phone":"804-517-1262","Email":"coldjourney91@gmail.com","ID":"4","Comments":"write any thing"}, 
-                    { "Name":"Alex","Role":"alex"}, 
-                       
-                     
-                      
-                ]
-                })
+        }
 
+        componentDidUpdate(){
+            this.refreshList();
+        }
+
+
+        deleteUser(userid){
+            console.log(userid)
+            if(window.confirm("are you sure you want to delete this Member?"))
+      
+            fetch("http://localhost:3004/users/"+userid,{
+                method:"DELETE",
+                headers:{
+                  'Accept':'application/json',
+                  'Content-Type': 'application/json'
+              
+                }
                 
-
-
+              })
             
         }
 
     render(){
+         const {users, userid,username,useremail, userphone} = this.state;
+         let creatUserModalClose =() => this.setState({creatUserModalShow:false})
+         let editUserModalClose =() => this.setState({editUserModalShow:false})
         
-        const {departments} = this.state;
         return(
+            <div>
         <Table className="mt-4 "striped bordered hover size="sm">
             <thead>
                 <tr>
-                    
-                    <th>Name </th>
-                    <th>Role </th>
-                    
+                    <th>ID</th>
+                    <th>name </th>
+                    <th> Role </th>
+                    <th>Options</th>
                     
                 </tr>
-
+        
             </thead>
-
+        
             <tbody>
-                {departments.map(department=>
                 
+                {users.map((department)=>{
+                    // console.log(user.id)
+                    return(
                     <tr key ={department.id}>
+                     <td>{department.id}</td>
                     <td>{department.name}</td>
+                    <td>{department.role}</td>
+                    
+                    
+                    <td>{
+                      <ButtonToolbar>
+                          <Button
+                          className="mr-2" variant="info"
+                          //click={()=> this.setState({editUserModalShow:true})}
+                          
+                         onClick={() => {
+                            this.setState({editUserModalShow:true,departmentname:department.name,
+                                departmentid:department.id,departmentrole:department.role,
+                                })
+                            this.show()
+                         }} >
+                              
+                              Edit
+                          </Button>
+
+                          <Button className="mr-2" variant="danger"
+                          onClick={()=> this.deleteUser(department.id)}
+                          
+                          >DELETE</Button>
+                          
+                        <EditUserModal show={this.state.editUserModalShow}
+                         onHide={editUserModalClose} 
+                         userid = {this.state.userid} username = {this.state.username} useremail = {this.state.useremail} userphone = {this.state.userphone}/>
+                     </ButtonToolbar>
+                        
+                        }
+
+                        
+                        
+                        </td>
                    
-                   
-                    
-                    
-                     </tr>
-                    
-                    
+
+                    </tr>
                     )}
-
-
+                
+                    )}
+                
+        
+        
             </tbody>
-
+        
         </Table>
-        )
+        
+        <ButtonToolbar>
+            <Button  
+            variant='primary'
+            //oclick={()=> this.setState({creatUserModalShow: true})}
+           onClick={() => this.showCreate()}
+            
+            
+             > Add User</Button>
+           <CreatUserModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
+        </ButtonToolbar>
+       
+        </div>
+        )}
+       
     }
 
-}
 
 export default Department;
+
+
+

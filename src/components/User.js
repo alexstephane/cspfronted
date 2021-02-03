@@ -23,7 +23,7 @@ export class User extends Component {
         }
 
 
-        show(){
+        show(userid,username,useremail,userphone){
             this.setState({
                 editUserModalShow:true
             })
@@ -51,6 +51,23 @@ export class User extends Component {
 
         componentDidUpdate(){
             this.refreshList();
+        }
+
+
+        deleteUser(userid){
+            console.log(userid)
+            if(window.confirm("are you sure you want to delete this Member?"))
+      
+            fetch("http://localhost:3004/users/"+userid,{
+                method:"DELETE",
+                headers:{
+                  'Accept':'application/json',
+                  'Content-Type': 'application/json'
+              
+                }
+                
+              })
+            
         }
 
     render(){
@@ -88,23 +105,33 @@ export class User extends Component {
                       <ButtonToolbar>
                           <Button
                           className="mr-2" variant="info"
-                           // oclick={()=> this.setState({editUserModalShow:true})}
-                          onClick={() => {this.show() }}
-                            
-                          >
+                          //click={()=> this.setState({editUserModalShow:true})}
+                          
+                         onClick={() => {
+                            this.setState({editUserModalShow:true,username:user.name,
+                                userid:user.id,useremail:user.email,
+                                userphone:user.phone})
+                            this.show()
+                         }} >
                               
                               Edit
                           </Button>
+
+                          <Button className="mr-2" variant="danger"
+                          onClick={()=> this.deleteUser(user.id)}
                           
-                         
-
-                        <EditUserModal show={this.state.editUserModalShow} onHide={editUserModalClose} />
-
-
-                        <CreatUserModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
+                          >DELETE</Button>
+                          
+                        <EditUserModal show={this.state.editUserModalShow}
+                         onHide={editUserModalClose} 
+                         userid = {this.state.userid} username = {this.state.username} useremail = {this.state.useremail} userphone = {this.state.userphone}/>
                      </ButtonToolbar>
                         
-                        }</td>
+                        }
+
+                        
+                        
+                        </td>
                    
 
                     </tr>
@@ -122,11 +149,11 @@ export class User extends Component {
             <Button  
             variant='primary'
             //oclick={()=> this.setState({creatUserModalShow: true})}
-            onClick={() => this.showCreate()}
+           onClick={() => this.showCreate()}
             
             
              > Add User</Button>
-           <CreatUserModal showCreate={this.state.creatUserModalShow} onHide={creatUserModalClose} />
+           <CreatUserModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
         </ButtonToolbar>
        
         </div>
