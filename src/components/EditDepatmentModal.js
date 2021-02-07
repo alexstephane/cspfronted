@@ -4,7 +4,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 
 
-export class  EditUserModal extends Component{
+export class  EditDepartmentModal extends Component{
 
 
 

@@ -4,16 +4,27 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 
 
-export class  CreatDepartmemtModal extends Component{
+export class  CreatDepartmentModal extends Component{
 
 
 constructor(props) {
     super(props);
 
-this.state = {snackbaropen: false, snackbarmsg:''};
+this.state = {snackbaropen: false, snackbarmsg:'',departments:[]};
 this.handleSubmit = this.handleSubmit.bind(this);
 }
 
+
+componentDidMount(){
+fetch(`http://localhost:3004/departments`)
+  .then(resp => resp.json())
+  .then(data => {
+    this.setState({departments:data})
+    console.log(data)
+
+  })
+  
+}
 SnackbarClose = (event) =>{
   this.setState({snackbaropen:false});
 }
@@ -23,7 +34,7 @@ handleSubmit(event){
 event.preventDefault();
 //alert(event.target.MemberName.value);
 
-fetch(`http://localhost:3004/separtmemts`,{
+fetch(`http://localhost:3004/departments`,{
   method:"POST",
   headers:{
     'Accept':'application/json',
@@ -108,13 +119,17 @@ fetch(`http://localhost:3004/separtmemts`,{
                          </Form.Group>
                          <Form.Group controlId="role">
                          <Form.Label>Role</Form.Label>  
-                         <Form.Control 
-                         type="text"
-                         name= "role"
-                         required
-                         placeholder="role"
-                         
-                         />
+                         <Form.Control as="select">
+                           {this.state.departments.map(department =>
+                            
+                            <option key={department.id}> {department.roles[0]}</option>
+                            
+                            
+                            //c
+                            )}
+
+
+                         </Form.Control>
                          </Form.Group>
 
                          

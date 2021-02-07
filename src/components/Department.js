@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Table} from "react-bootstrap";
 import {Button,ButtonToolbar} from 'react-bootstrap';
-import {CreatUserModal} from './CreatUserModal';
+import {CreatDepartmentModal} from './CreatDepartmentModal';
 import {EditUserModal} from './EditUserModal';
 
 
@@ -97,7 +97,7 @@ export class Department extends Component {
                     <tr key ={department.id}>
                      <td>{department.id}</td>
                     <td>{department.name}</td>
-                    <td>{department.role}</td>
+                    <td>{department.roles[0]}</td>
                     
                     
                     <td>{
@@ -152,7 +152,7 @@ export class Department extends Component {
             
             
              > Add User</Button>
-           <CreatUserModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
+           <CreatDepartmentModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
         </ButtonToolbar>
        
         </div>
