@@ -4,64 +4,62 @@ import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 
 
-export class  EditDepartmentModal extends Component{
-
+export class  EditDepatmentModal extends Component{
 
 
 constructor(props) {
     super(props);
- 
-// this.state = {snackbaropen: false, snackbarmsg:''};
-// this.handleSubmit = this.handleSubmit.bind(this);
+
+this.state = {snackbaropen: false, snackbarmsg:'',departments:[]};
+this.handleSubmit = this.handleSubmit.bind(this);
 }
 
-// state = {
-//   userid: this.state.user.id, 
+
+componentDidMount(){
+fetch(`http://localhost:3004/departments/`)
+  .then(resp => resp.json())
+  .then(data => {
+    this.setState({departments:data})
+    console.log(data)
+
+  })
   
- 
-// }
-
-
-
-
-// SnackbarClose = (event) =>{
-//   this.setState({snackbaropen:false});
-// }
+}
+SnackbarClose = (event) =>{
+  this.setState({snackbaropen:false});
+}
 
 
 handleSubmit(event){
-  
-  
 event.preventDefault();
 //alert(event.target.MemberName.value);
 
-fetch('http://localhost:3004/users/221',{
-  method:"PATCH",
+fetch(`http://localhost:3004/departments/288`,{
+  method:"PUT",
   headers:{
     'Accept':'application/json',
     'Content-Type': 'application/json'
 
   },
   body:JSON.stringify({
-   id: event.target.id.value,
+    id: event.target.id.value,
     name: event.target.name.value,
-    phone: event.target.phone.value,
-    email: event.target.email.value
-
+    role: event.target.role.value,
+    
   })
 })
-// .then(resp=> resp.json())
-// .then((result)=>{
-//     console.log(result)
-// //alert(result)
+.then(resp=> resp.json())
+.then((result)=>{
+//alert(result)
+//this.setState({snackbaropen:true, snackbarmsg:result})
 
+},
+(error)=>{
+  //alert('Failed')
+  this.setState({snackbaropen:true, snackbarmsg:"failed"})
 
-//  },
-//  (error)=>{
-// alert('Failed')
-// //   this.setState({snackbaropen:true, snackbarmsg:"failed"})
-//  }
- //)
+}
+)
 }
 
 
@@ -70,14 +68,28 @@ fetch('http://localhost:3004/users/221',{
 
 
         render(){
-           // console.log("alex")
-           //console.log(userid)
+            // console.log("aledx")
            
             return(
 
-             
-                
-     
+              <div className="container">
+                  <Snackbar
+                  anchorOrigin={{vertical:'center',horizontal:'center'}}
+                  open = {this.state.snackbaropen}
+                  autoHideDuration = {3000}
+                  onClick={this.SnackbarClose}
+                  message = {<span id="message-id">{this.state.snackbarmsg}</span>}
+                  action ={[
+                    <IconButton
+                    key="close"
+                    color="inherit"
+                    onClick={this.SnackbarClose}>
+                      c
+                      x
+                    </IconButton>
+                  ]}
+
+                  />
               <Modal
                 {...this.props}
                 size="lg"
@@ -86,19 +98,24 @@ fetch('http://localhost:3004/users/221',{
               >
                 <Modal.Header closeButton>
                   <Modal.Title id="contained-modal-title-vcenter">
-                    Edit A MEMBER
+                    Update Department
                   </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   
-                <Row>
+          
+                     <Row>
                        <Col sm={6}></Col>
                        <Form onSubmit={this.handleSubmit}>
-                            
+                         
+
                        <Form.Group controlId="id">
-                         <Form.Label>Member Id</Form.Label>  
+                         <Form.Label>Department ID</Form.Label>  
                          <Form.Control 
                          type="text"
+                         name= "name"
+                         required
+                         placeholder="name"
                          name= "id"
                          required
                          disabled
@@ -108,46 +125,39 @@ fetch('http://localhost:3004/users/221',{
                          />
                          </Form.Group>
 
-
                          <Form.Group controlId="name">
                          <Form.Label>Name</Form.Label>  
                          <Form.Control 
                          type="text"
                          name= "name"
                          required
-                         defaultValue = {this.props.username}
                          placeholder="name"
                          
                          />
                          </Form.Group>
-                         <Form.Group controlId="email">
-                         <Form.Label>Email Address</Form.Label>  
-                         <Form.Control 
-                         type="text"
-                         name= "email"
-                         required
-                         defaultValue = {this.props.useremail}
-                         placeholder="Email"
-                         
-                         />
+                         <Form.Group controlId="role">
+                         <Form.Label>Role</Form.Label>  
+                         <Form.Control as="select">
+
+
+                           {this.state.departments.map(department =>
+                            
+                            <option key={department.id}> {department.roles[0]}</option>
+                            
+                            
+                            
+                            )}
+
+
+                         </Form.Control>
                          </Form.Group>
 
-                         <Form.Group controlId="phone">
-                         <Form.Label>phone Number</Form.Label>  
-                         <Form.Control 
-                         type="text"
-                         name= "phone"
-                         required
-                         defaultValue = {this.props.userphone}
-                         placeholder="Phone"
                          
-                         />
-                         </Form.Group>
 
                          
 
                          <Button variant="primary" type="submit">
-                          Update member
+                           Update Departmemt
                          </Button>
                          </Form>
 
@@ -156,14 +166,13 @@ fetch('http://localhost:3004/users/221',{
 
                      </Row>
                  
-                    
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="danger"onClick={this.props.onHide}>Close</Button>
                 </Modal.Footer>
               </Modal>
                 
-              
+              </div>
 
 
             )
@@ -172,3 +181,4 @@ fetch('http://localhost:3004/users/221',{
         }
 
 }
+  

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Table} from "react-bootstrap";
 import {Button,ButtonToolbar} from 'react-bootstrap';
 import {CreatDepartmentModal} from './CreatDepartmentModal';
-import {EditDepartmentModal} from './EditDepartmentModal';
+import {EditDepatmentModal} from './EditDepatmentModal';
 
 
 export class Department extends Component {
@@ -121,7 +121,7 @@ export class Department extends Component {
                           
                           >DELETE</Button>
                           
-                        <EditUserModal show={this.state.editUserModalShow}
+                        <EditDepatmentModal show={this.state.editUserModalShow}
                          onHide={editUserModalClose} 
                          userid = {this.state.userid} username = {this.state.username} useremail = {this.state.useremail} userphone = {this.state.userphone}/>
                      </ButtonToolbar>
@@ -151,7 +151,7 @@ export class Department extends Component {
            onClick={() => this.showCreate()}
             
             
-             > Add User</Button>
+             > Add Department</Button>
            <CreatDepartmentModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
         </ButtonToolbar>
        

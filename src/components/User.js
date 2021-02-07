@@ -40,7 +40,7 @@ export class User extends Component {
             //console.log("data")
 
 
-            fetch('http://localhost:3004/users')
+            fetch('http://localhost:3004/users/')
                 .then(resp=> resp.json())
                 .then(data => {
                  //console.log(data)
