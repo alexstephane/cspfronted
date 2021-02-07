@@ -132,6 +132,7 @@ fetch(`http://localhost:3004/departments/288`,{
                          name= "name"
                          required
                          placeholder="name"
+                         defaultValue = {this.props.departmentRole}
                          
                          />
                          </Form.Group>
@@ -139,15 +140,14 @@ fetch(`http://localhost:3004/departments/288`,{
                          <Form.Label>Role</Form.Label>  
                          <Form.Control as="select">
 
-
                            {this.state.departments.map(department =>
                             
                             <option key={department.id}> {department.roles[0]}</option>
                             
                             
-                            
                             )}
 
+                              defaultValue = {this.props.departmentRole}
 
                          </Form.Control>
                          </Form.Group>

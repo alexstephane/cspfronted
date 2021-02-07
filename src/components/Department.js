@@ -44,7 +44,7 @@ export class Department extends Component {
                 .then(resp=> resp.json())
                 .then(data => {
                  //console.log(data)
-                 this.setState({users:data})
+                 this.setState({departments:data})
                 });
                 
         }
@@ -54,11 +54,11 @@ export class Department extends Component {
         }
 
 
-        deleteUser(userid){
-            console.log(userid)
+        deleteUser(departmentid){
+            console.log(departmentid)
             if(window.confirm("are you sure you want to delete this Member?"))
       
-            fetch("http://localhost:3004/users/"+userid,{
+            fetch("http://localhost:3004/departments/"+departmentid,{
                 method:"DELETE",
                 headers:{
                   'Accept':'application/json',
@@ -71,7 +71,8 @@ export class Department extends Component {
         }
 
     render(){
-         const {users, userid,username,useremail, userphone} = this.state;
+         const {departments,users, departmentid,departmentName,departmentRole,useremail, userphone} = this.state;
+         //console.log(departments)
          let creatUserModalClose =() => this.setState({creatUserModalShow:false})
          let editUserModalClose =() => this.setState({editUserModalShow:false})
         
@@ -91,8 +92,8 @@ export class Department extends Component {
         
             <tbody>
                 
-                {users.map((department)=>{
-                    // console.log(user.id)
+                {departments.map((department)=>{
+                    //console.log(department.id)
                     return(
                     <tr key ={department.id}>
                      <td>{department.id}</td>
@@ -123,7 +124,7 @@ export class Department extends Component {
                           
                         <EditDepatmentModal show={this.state.editUserModalShow}
                          onHide={editUserModalClose} 
-                         userid = {this.state.userid} username = {this.state.username} useremail = {this.state.useremail} userphone = {this.state.userphone}/>
+                         departmentid={this.state.departmentid} departmentName={this.state.departmentName} departmentRole={this.state.departmentRole} userid = {this.state.userid} username = {this.state.username} useremail = {this.state.useremail} userphone = {this.state.userphone}/>
                      </ButtonToolbar>
                         
                         }
@@ -151,7 +152,7 @@ export class Department extends Component {
            onClick={() => this.showCreate()}
             
             
-             > Add Department</Button>
+             > Add User</Button>
            <CreatDepartmentModal show={this.state.creatUserModalShow} onHide={creatUserModalClose} />
         </ButtonToolbar>
        
