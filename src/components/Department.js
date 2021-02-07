@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Table} from "react-bootstrap";
 import {Button,ButtonToolbar} from 'react-bootstrap';
 import {CreatDepartmentModal} from './CreatDepartmentModal';
-import {EditUserModal} from './EditUserModal';
+import {EditDepartmentModal} from './EditDepartmentModal';
 
 
 export class Department extends Component {
