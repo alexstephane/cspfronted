@@ -94,7 +94,7 @@ export class User extends Component {
             <tbody>
                 
                 {users.map((user)=>{
-                    // console.log(user.id)
+                    //console.log(user.id)
                     return(
                     <tr key ={user.id}>
                     <td>{user.name}</td>
@@ -134,7 +134,7 @@ export class User extends Component {
                         </td>
                    
 
-                    </tr>
+                        </tr>
                     )}
                 
                     )}
