@@ -71,6 +71,7 @@ export class User extends Component {
         }
 
     render(){
+        //console.log(this.state.users)
          const {users, userid,username,useremail, userphone} = this.state;
          let creatUserModalClose =() => this.setState({creatUserModalShow:false})
          let editUserModalClose =() => this.setState({editUserModalShow:false})
