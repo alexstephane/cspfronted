@@ -60,7 +60,7 @@ export class Department extends Component {
 
 
     deleteUser(departmentid){
-        console.log(departmentid)
+        //console.log(departmentid)
         if(window.confirm("are you sure you want to delete this Member?"))
   
         fetch("http://localhost:3004/departmens/"+departmentid,{
@@ -77,7 +77,7 @@ export class Department extends Component {
 
 render(){
     //console.log(this.state.users)
-     const {departments, userid,username,useremail, userphone} = this.state;
+     const {departments, departmentid,name,role} = this.state;
      let creatUserModalClose =() => this.setState({creatUserModalShow:false})
      let editUserModalClose =() => this.setState({editUserModalShow:false})
     
@@ -87,7 +87,7 @@ render(){
         <thead>
             <tr>
                
-                <th>name </th>
+            <th> Name </th>
                 <th> role </th>
                 <th>ID</th>
                 
@@ -95,27 +95,30 @@ render(){
             </tr>
     
         </thead>
-    
         <tbody>
             
-            {departments.map((user)=>{
+            {departments.map((department)=>{
                 //console.log(user.id)
                 return(
-                <tr key ={user.id}>
-                <td>{user.name}</td>
-                <td>{user.role}</td>
                 
-                <td>{user.id}</td>
+                <tr key ={department.id}>
+                <td>{department.name}</td>
+                <td>{department.role}</td>
+                <td>{department.id}</td>
+                
+                
                 <td>{
+                    
                   <ButtonToolbar>
+                      
                       <Button
                       className="mr-2" variant="info"
                       //click={()=> this.setState({editUserModalShow:true})}
                       
                      onClick={() => {
-                        this.setState({editUserModalShow:true,username:user.name,
-                            userid:user.id,useremail:user.email,
-                            userphone:user.phone})
+                        this.setState({editUserModalShow:true,name:department.name,
+                            departmentid:department.id
+                            })
                         this.show()
                      }} >
                           
@@ -123,14 +126,15 @@ render(){
                       </Button>
 
                       <Button className="mr-2" variant="danger"
-                      onClick={()=> this.deleteUser(user.id)}
+                      onClick={()=> this.deleteUser(department.id)}
                       
                       >DELETE</Button>
                       
                     <EditUserModal show={this.state.editUserModalShow}
                      onHide={editUserModalClose} 
-                     userid = {this.state.userid} username = {this.state.username} useremail = {this.state.useremail} userphone = {this.state.userphone}/>
+                     departmentid = {this.state.departmentid} name = {this.state.name} role = {this.state.role}/>
                  </ButtonToolbar>
+                 
                     
                     }
 
@@ -147,6 +151,7 @@ render(){
     
     
         </tbody>
+        
     
     </Table>
     
